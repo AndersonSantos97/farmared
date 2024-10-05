@@ -1,7 +1,7 @@
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-// import { BrowserRouter as Router, Route,Routes, useNavigate } from "react-router-dom";
-// import MainMenu from "./screens/MainMenu";
+import { BrowserRouter as Router, Route,Routes } from "react-router-dom";
+import MainMenu from "./screens/MainMenu";
 
 function App() {
 
@@ -91,16 +91,15 @@ function App() {
   )
 }
 
-export default App;
-// function MainApp(){
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<App/>}/>
-//         <Route path="/mainmenu" element={<MainMenu/>}/>
-//       </Routes>
-//     </Router>
-//   )
-// }
+function MainApp(){
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<App/>}/>
+        <Route path="/mainmenu" element={<MainMenu/>}/>
+      </Routes>
+    </Router>
+  )
+}
 
-// export default MainApp
+export default MainApp
