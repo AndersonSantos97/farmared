@@ -7,6 +7,9 @@ import React,{useState} from "react"
         const [productName, setProductName] = useState('');
         const [unitaryPrice, setUnitaryPrice] = useState('');
         const [productImg, setProductImg] = useState('');
+        const [searchCli, setSearchCli] = useState('');
+        const [clieName, setClieName] = useState('');
+        const [clieDni, setClieDni] = useState('');
 
         const handleSearch = async() => {
             try{
@@ -22,6 +25,23 @@ import React,{useState} from "react"
             }catch(error){
                 console.error('Error fetching product: ', error)
                 alert('Producto no encontrado');
+            }
+        };
+
+        const hanldeCliente = async() =>{
+            try{
+                const responseCli = await fetch(`http://127.0.0.1:8000/findDni/${searchCli}`);
+
+                if(!responseCli.ok){
+                    throw new Error('Cliente no encontrado')
+                }
+
+                const client = await responseCli.json();
+                setClieName(client.nombre);
+                setClieDni(client.dni);
+            }catch(error){
+                console.error('Error fetching client: ', error);
+                alert('No se encontro el cliente');
             }
         };
         
@@ -91,11 +111,26 @@ import React,{useState} from "react"
                             )}
                         </div>
                         <div className="">
+                            <div>
+                                    <div>
+                                        <label htmlFor="client-dni" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">DNI del Cliente</label>
+                                        <input type="text" id="client-dni" 
+                                        value={searchCli}
+                                        onChange = {(e) => setSearchCli(e.target.value)}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="DNI del Cliente" required />
+                                        <button onClick={hanldeCliente} className="ml-2 p-2 bg-blue-500 text-white rounded">
+                                            Buscar
+                                        </button>
+                                    </div>
+                            </div>
                             <form action="">
                                 <div>
                                     <div>
-                                        <label htmlFor="client-dni" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">DNI del Cliente</label>
-                                        <input type="text" id="client-dni" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="DNI del Cliente" required />
+                                        <label htmlFor="client-name" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Nombre del Cliente</label>
+                                        <input type="text" id="client-name" 
+                                        value={clieName}
+                                        readOnly
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nombre del Cliente" required />
                                     </div>
                                 </div>
                                 <div>
@@ -105,6 +140,7 @@ import React,{useState} from "react"
                                         value={productName}
                                         readOnly
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Producto" required />
+  
                                     </div>
                                 </div>
 
