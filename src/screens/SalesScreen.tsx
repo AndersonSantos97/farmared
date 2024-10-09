@@ -5,8 +5,9 @@ import React,{useState} from "react"
 
         const [searchQuery, setSearchQuery] = useState(''); 
         const [productName, setProductName] = useState('');
-        const [unitaryPrice, setUnitaryPrice] = useState('');
+        const [unitaryPrice, setUnitaryPrice] = useState(50);
         const [productImg, setProductImg] = useState('');
+        const [productId, setProductId] = useState('');
         const [searchCli, setSearchCli] = useState('');
         const [clieName, setClieName] = useState('');
         const [clieDni, setClieDni] = useState('');
@@ -44,6 +45,15 @@ import React,{useState} from "react"
                 alert('No se encontro el cliente');
             }
         };
+
+        const [quantity, SetQuantity] = useState(0);
+        const [total, setTotal] = useState(0);
+
+        const handleQuantityChange = (e: { target: { value: any; }; }) => {
+            const newQuantity = e.target.value;
+            SetQuantity(newQuantity);
+            setTotal(newQuantity * unitaryPrice);
+        }
         
         return(
             <>
@@ -133,6 +143,7 @@ import React,{useState} from "react"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nombre del Cliente" required />
                                     </div>
                                 </div>
+
                                 <div>
                                     <div>
                                         <label htmlFor="product-name" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Nombre del Producto</label>
@@ -156,8 +167,23 @@ import React,{useState} from "react"
 
                                 <div>
                                     <div>
-                                    <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-600">Cantidad</label>
-                                    <input type="number" id="quantity" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                        <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-600">Cantidad</label>
+                                        <input type="number" id="quantity" value={quantity} onChange={handleQuantityChange} aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <label htmlFor="total" className="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-600">Total</label>
+                                        <input value={total} type="number" id="total" aria-describedby="helper-text-explanation" readOnly className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <button  className="ml-2 p-2 bg-blue-500 text-white rounded">
+                                            Vender
+                                        </button>
                                     </div>
                                 </div>
 
