@@ -186,14 +186,14 @@ import { useNavigate } from "react-router-dom";
                                         </div>
                                     </div>
                             </div>
-                            <form onSubmit={(e) => {e.preventDefault(); handleSubmit(); }} action="" className="rounded-md bg-blue-200 p-2">
+                            <form onSubmit={(e) => {e.preventDefault(); handleSubmit(); }} action="" className="bg-white border-gray-200 dark:bg-gray-900 rounded-md p-2">
                                 <div>
                                     <input type="hidden" name="" id="id-prod" value={productId} />
                                 </div>
                                 <div>
                                     <input type="hidden" name="" id="dni" value={clieDni}/>
                                 </div>
-                                <div>
+                                <div className="pb-4">
                                     <div>
                                         <label htmlFor="client-name" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Nombre del Cliente</label>
                                         <input type="text" id="client-name" 
@@ -203,7 +203,7 @@ import { useNavigate } from "react-router-dom";
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className="pb-4">
                                     <div>
                                         <label htmlFor="product-name" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Nombre del Producto</label>
                                         <input type="text" id="product-name" 
@@ -214,7 +214,7 @@ import { useNavigate } from "react-router-dom";
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className="pb-4">
                                     <div>
                                         <label htmlFor="unitary-price" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Precio Unitario</label>
                                         <input type="text" id="unitary-price" 
@@ -224,21 +224,21 @@ import { useNavigate } from "react-router-dom";
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className="pb-4">
                                     <div>
                                         <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-600">Cantidad</label>
                                         <input type="number" id="quantity" value={quantity} onChange={handleQuantityChange} aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className="pb-4">
                                     <div>
                                         <label htmlFor="total" className="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-600">Total</label>
                                         <input value={total} type="number" id="total" aria-describedby="helper-text-explanation" readOnly className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     </div>
                                 </div>
 
-                                <div className="my-4 flex">
+                                <div className="my-2 flex">
                                     <div>
                                         <button  type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
                                             Vender

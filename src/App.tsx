@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BrowserRouter as Router, Route,Routes } from "react-router-dom";
 import MainMenu from "./screens/MainMenu";
 import SalesScreen from "./screens/SalesScreen";
+import ClientScreen from "./screens/ClientScreen";
 
 function App() {
 
@@ -99,6 +100,7 @@ function MainApp(){
         <Route path="/" element={<App/>}/>
         <Route path="/mainmenu" element={<MainMenu/>}/>
         <Route path="/sale" element={<SalesScreen/>}/>
+        <Route path="/client" element={<ClientScreen/>}/>
       </Routes>
     </Router>
   )
