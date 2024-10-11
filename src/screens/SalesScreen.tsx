@@ -1,8 +1,8 @@
-import React,{useState} from "react"
-
+import {useState, useEffect} from "react"
+import { useNavigate } from "react-router-dom";
 
     export default function SalesScreen(){
-
+        const navigate = useNavigate();
         const [searchQuery, setSearchQuery] = useState(''); 
         const [productName, setProductName] = useState('');
         const [unitaryPrice, setUnitaryPrice] = useState(50);
@@ -23,6 +23,7 @@ import React,{useState} from "react"
                 setProductName(product.description);
                 setUnitaryPrice(product.precio);
                 setProductImg(product.img);
+                setProductId(product.id);
             }catch(error){
                 console.error('Error fetching product: ', error)
                 alert('Producto no encontrado');
@@ -54,7 +55,55 @@ import React,{useState} from "react"
             SetQuantity(newQuantity);
             setTotal(newQuantity * unitaryPrice);
         }
-        
+
+        const handleSubmit = async() => {
+            const ventaData = {
+                dni_cliente: clieDni,
+                total: total,
+                detalle: [
+                    {
+                        id_producto: productId,
+                        cantidad: quantity,
+                        precio: unitaryPrice,
+                        sub_total: total
+                    }
+                ]
+            };
+
+            try{
+                const response = await fetch("http://127.0.0.1:8000/ventas/",{
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify(ventaData),
+                });
+
+                if(!response.ok){
+                    throw new Error("Error al crear la venta");
+                }
+
+                const result = await response.json();
+                alert(`Venta creada con éxito, ID: ${result.venta_id}`)
+            }catch(error){
+                console.error("Error al enviar la venta: ", error);
+                alert("Hubo un problema al crear la venta");
+            }
+        }
+
+        const mainScreen =()=>{
+
+            navigate("/MainMenu");
+        };
+        const logout =() =>{
+            //eliminar el token del almacenamiento
+            localStorage.removeItem("token");
+
+            //redirigir al login
+            navigate("/");
+        }
+    
+
         return(
             <>
                 <header>
@@ -100,10 +149,10 @@ import React,{useState} from "react"
                                 </div>
                                 <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                                     <li>
-                                    <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Regresar</a>
+                                    <a onClick={mainScreen} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Regresar</a>
                                     </li>
                                     <li>
-                                    <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Salir</a>
+                                    <a onClick={logout} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Salir</a>
                                     </li>
                                 </ul>
                             </div>
@@ -113,7 +162,7 @@ import React,{useState} from "react"
 
                 <section className="m-10">
                     <div className="grid grid-cols-3">
-                        <div>
+                        <div className="place-self-center">
                             {productImg ? (
                                 <img src={productImg} alt="Imagen el producto" className="max-w-full h-auto"/>
                             ):(
@@ -121,19 +170,29 @@ import React,{useState} from "react"
                             )}
                         </div>
                         <div className="">
-                            <div>
-                                    <div>
-                                        <label htmlFor="client-dni" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">DNI del Cliente</label>
-                                        <input type="text" id="client-dni" 
-                                        value={searchCli}
-                                        onChange = {(e) => setSearchCli(e.target.value)}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="DNI del Cliente" required />
-                                        <button onClick={hanldeCliente} className="ml-2 p-2 bg-blue-500 text-white rounded">
-                                            Buscar
-                                        </button>
+                            <div className="my-10">
+                                    <div className="flex">
+                                        <div>
+                                            <label htmlFor="client-dni" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">DNI del Cliente</label>
+                                            <input type="text" id="client-dni" 
+                                            value={searchCli}
+                                            onChange = {(e) => setSearchCli(e.target.value)}
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="DNI del Cliente" required />
+                                        </div>
+                                        <div className="place-self-end">
+                                            <button onClick={hanldeCliente} className="ml-2 p-2 bg-blue-500 text-white rounded">
+                                                Buscar
+                                            </button>
+                                        </div>
                                     </div>
                             </div>
-                            <form action="">
+                            <form onSubmit={(e) => {e.preventDefault(); handleSubmit(); }} action="" className="rounded-md bg-blue-200 p-2">
+                                <div>
+                                    <input type="hidden" name="" id="id-prod" value={productId} />
+                                </div>
+                                <div>
+                                    <input type="hidden" name="" id="dni" value={clieDni}/>
+                                </div>
                                 <div>
                                     <div>
                                         <label htmlFor="client-name" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Nombre del Cliente</label>
@@ -179,9 +238,9 @@ import React,{useState} from "react"
                                     </div>
                                 </div>
 
-                                <div>
+                                <div className="my-4 flex">
                                     <div>
-                                        <button  className="ml-2 p-2 bg-blue-500 text-white rounded">
+                                        <button  type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
                                             Vender
                                         </button>
                                     </div>
