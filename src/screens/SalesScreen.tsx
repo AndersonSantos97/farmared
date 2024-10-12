@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
         const navigate = useNavigate();
         const [searchQuery, setSearchQuery] = useState(''); 
         const [productName, setProductName] = useState('');
-        const [unitaryPrice, setUnitaryPrice] = useState(50);
+        const [unitaryPrice, setUnitaryPrice] = useState(0);
         const [productImg, setProductImg] = useState('');
         const [productId, setProductId] = useState('');
         const [searchCli, setSearchCli] = useState('');
@@ -85,6 +85,18 @@ import { useNavigate } from "react-router-dom";
 
                 const result = await response.json();
                 alert(`Venta creada con éxito, ID: ${result.venta_id}`)
+
+                setClieDni('');
+                setClieName('');
+                setProductId('');
+                setProductImg('');
+                setProductName('');
+                setSearchCli('');
+                setSearchQuery('');
+                setTotal(0);
+                setUnitaryPrice(0);
+                SetQuantity(0);
+
             }catch(error){
                 console.error("Error al enviar la venta: ", error);
                 alert("Hubo un problema al crear la venta");

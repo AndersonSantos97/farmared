@@ -26,14 +26,17 @@ export default function ClientScreen(){
             nombre: clientName,
             dni: clientDNI,
             direccion: clientDirect,
-            fecha_nac: clientFechaNac
+            fecha_nac: clientFechaNac ? new Date(clientFechaNac).toISOString().split('T')[0]:null,
+            ingreso: clientFechaNac
         };
+
+        console.log(clientData.fecha_nac);
 
         try{
             const response = await fetch("http://127.0.0.1:8000/client/",{
                 method: "POST",
                 headers: {
-                    "content-type": "application/json",
+                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify(clientData),
             });
@@ -45,6 +48,10 @@ export default function ClientScreen(){
             const result = await response.json();
             alert(`Cliente creado con exito, ID: ${result.cliente_id}`)
 
+            setClientName('');
+            setClientDNI('');
+            setClientDirect('');
+            setClientFechaNac('');
 
         }catch(error){
             console.error("Error al ingresar el cliente: ",error)
@@ -109,7 +116,8 @@ export default function ClientScreen(){
                     <div className="pb-12">
                         <div>
                             <label htmlFor="client_birth" className="block mb-2 text-sm font-medium text-black dark:text-blue-600">Nacimiento del cliente</label>
-                            <input id="client_birth" type="date" 
+                            <input id="client_birth" type="date"
+                            value={clientFechaNac}
                             onChange={(e)=>setClientFechaNac(e.target.value)}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Seleccione Fecha"/>
                         </div>
